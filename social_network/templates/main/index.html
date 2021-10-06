@@ -3,51 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <title>social network</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0"
+          crossorigin="anonymous">
+    <title>Django Cards</title>
 </head>
 <body>
 {% extends "layout/basic.html" %}
 {% load static %}
 {% block content %}
     {% if posts %}
-        <h3>User posts</h3>
-        <ul class="list">
+        <h3 class="text-center">User posts</h3>
+        <li style="display: flex; flex-direction: column; flex-wrap: wrap; align-content: center">
             {% if posts %}
-                <ul class="list">
-                    {% for post in posts %}
-                        {% if post.is_active %}
-                            <li class="media my-5 border">
-                                {% url 'social_network:profile_post_edit' pk=post.pk as url %}
-                                <div class="media-body">
-                                    <a href="{{ url }}{{ all }}">
-                                        {% if post.image %}
-                                            <img class="additional-image" src="{% static post.image %}" alt="image">
-                                        {% else %}
-                                            <img class="additional-image" src="{% static 'alt_image.jpg' %}" alt="alt">
-                                        {% endif %}
-                                    </a>
-                                </div>
-                                <div class="media-body"></div>
-                                <div class="media-body">
-                                    <div>
-                                        <h4 class="text-justify">{{ post.title }}</h4>
-                                        <p class="text-right">{{ post.content }}</p>
-                                    </div>
-                                    <div>
-                                        <p class="text-justify font-italic">likes: {{ post.like_count }}</p>
-                                        <p class="text-justify font-italic">unlikes: {{ post.unlike_count }}</p>
-                                        <p class="text-justify"><a href="{{ url }}{{ all }}">edit</a></p>
+                {% for post in posts %}
+                    {% if post.is_active %}
+                        <div class="card" style="width: 18rem;margin: 10px">
+                            {% if post.image %}
+                                <img class="card-img-top" src="{% static post.image %}" alt="image">
+                            {% else %}
+                                <img class="card-img-top" src="{% static 'alt_image.jpg' %}" alt="alt">
+                            {% endif %}
+                            <div class="card-body">
+                                <div style="display: flex; flex-direction: row">
+                                    <h4 class="card-title">{{ post.title }}</h4>
+                                    <div style="
+                                            background: olivedrab;
+                                            width: 20px;
+                                            height: 20px;
+                                            margin-left: 10px;
+                                            border-radius: 50%;">
                                     </div>
                                 </div>
-                            </li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
+                                <div>
+                                    <p class="card-text">{{ post.content }}</p>
+                                    <p class="text-justify font-italic">
+                                        <a href="#">like: {{ post.like_count }}</a>
+                                    </p>
+                                    <p class="text-justify font-italic">
+                                        <a href="#">unlike: {{ post.unlike_count }}</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
             {% else %}
                 <h4 class="text-center"></h4>
+                </li>
             {% endif %}
-        </ul>
     {% else %}
-        <h3>You don`t have any posts yet</h3>
+        <h3>Any posts yet</h3>
     {% endif %}
 {% endblock %}
 </body>

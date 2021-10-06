@@ -14,7 +14,7 @@ from social_network.models import Post, PostUser
 
 
 def index(request):
-    posts = Post.objects.filter(is_active=True)[:10]
+    posts = Post.objects.filter(is_active=True)
     context = {'posts': posts}
     return render(request, 'main/index.html', context)
 
@@ -75,6 +75,7 @@ def profile_post_change(request, pk):
         return render(request, 'main/profile_post_change.html', context)
 
 
+@login_required
 def profile_posts(request):
     """get post from current user"""
     posts = Post.objects.all().filter(author_id=request.user.pk)
