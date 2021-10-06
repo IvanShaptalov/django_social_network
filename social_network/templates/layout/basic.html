@@ -1,0 +1,61 @@
+{% load bootstrap4 %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}social network - main page{% endblock %}</title>
+    {% bootstrap_css %}
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'style.css' %}">
+    {% bootstrap_javascript jquery='slim' %}
+</head>
+<body class="container-fluid">
+<header class="mb-4">
+    <h2 class="display-1 text-center">social network</h2>
+</header>
+<div class="row">
+    <ul class="col nav justify-content-end border">
+        {% if user.is_authenticated %}
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle"
+                   data-toggle="dropdown"
+                   href="#" role="button" aria-haspopup="true"
+                   aria-expanded="false">Profile</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{% url 'social_network:profile' %}">My posts</a>
+                    <a class="dropdown-item" href="{% url 'social_network:profile_post_add' %}">Add post</a>
+                    <a class="dropdown-item" href="{% url 'social_network:logout' %}">Log out</a>
+                </div>
+            </li>
+        {% else %}
+            <li class="nav-item"><a class="nav-link"
+                                    href="{% url 'social_network:login' %}">Sing in</a></li>
+            <li class="nav-item"><a class="nav-link"
+                                    href="{% url 'social_network:register' %}">Sign up</a></li>
+        {% endif %}
+    </ul>
+</div>
+<div class="row">
+    <nav class="col-md-auto nav flex-column border">
+        <a class="nav-link root"
+           href="{% url 'social_network:index' %}">Main page</a>
+        {#        {% for rubric in rubrics %}#}
+        {#            {% ifchanged rubric.super_rubric.pk %}#}
+        {#                <span class="nav-link root font-weight-bold">{{ rubric.super_rubric.name }}</span>#}
+        {#            {% endifchanged %}#}
+        {#            <a class="nav-link" href="{% url 'main:by_rubric' pk=rubric.pk %}">{{ rubric.name }}</a>#}
+        {#        {% endfor %}#}
+    </nav>
+    <section class="col border py-2">
+        {% bootstrap_messages %}
+        {% block content %}
+        {% endblock %}
+    </section>
+</div>
+<footer class="mt-3">
+    <p class="text-right font-italic">&copy; Ivan Shaptalov</p>
+</footer>
+</body>
+</html>

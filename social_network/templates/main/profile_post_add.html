@@ -1,0 +1,11 @@
+{% extends "layout/basic.html" %}
+{% load bootstrap4 %}
+{% block title %}Post adding - User profile{% endblock %}
+{% block content %}
+    <h2>Post adding</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% bootstrap_form form layout='horizontal' %}
+        {% buttons submit="Add" %} {% endbuttons %}
+    </form>
+{% endblock %}

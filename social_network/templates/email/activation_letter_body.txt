@@ -1,0 +1,6 @@
+{{ user.username }}!
+You registered in "Social Network"
+To activate your account, follow link below.
+ {{ host }}{% url 'social_network:register_activate' sign=sign %}
+
+Sincerely, site administration "Social Network"
