@@ -9,39 +9,45 @@
 {% load static %}
 {% block content %}
     {% if posts %}
+        <h3>User posts</h3>
         <ul class="list">
-            {% for post in posts %}
-                {% if post.is_active %}
-                    <li class="media my-5 border">
-                        {% url 'social_network:profile_post_edit' pk=post.pk as url %}
-                        <div class="media-body">
-                            <a href="{{ url }}{{ all }}">
-                                {% if post.image %}
-                                    <img class="additional-image" src="{% static post.image %}" alt="image">
-                                {% else %}
-                                    <img class="additional-image" src="{% static 'alt_image.jpg' %}" alt="alt">
-                                {% endif %}
-                            </a>
-                        </div>
-                        <div class="media-body"></div>
-                        <div class="media-body">
-                            <div>
-                                <h4 class="text-justify">{{ post.title }}</h4>
-                                <p class="text-right">{{ post.content }}</p>
-                            </div>
-                            <div>
-                                <p class="text-justify font-italic">likes: {{ post.like_count }}</p>
-                                <p class="text-justify font-italic">unlikes: {{ post.unlike_count }}</p>
-                                <p class="text-justify"><a href="{{ url }}{{ all }}">edit</a></p>
-                            </div>
-                        </div>
-                    </li>
-                {% endif %}
-            {% endfor %}
+            {% if posts %}
+                <ul class="list">
+                    {% for post in posts %}
+                        {% if post.is_active %}
+                            <li class="media my-5 border">
+                                {% url 'social_network:profile_post_edit' pk=post.pk as url %}
+                                <div class="media-body">
+                                    <a href="{{ url }}{{ all }}">
+                                        {% if post.image %}
+                                            <img class="additional-image" src="{% static post.image %}" alt="image">
+                                        {% else %}
+                                            <img class="additional-image" src="{% static 'alt_image.jpg' %}" alt="alt">
+                                        {% endif %}
+                                    </a>
+                                </div>
+                                <div class="media-body"></div>
+                                <div class="media-body">
+                                    <div>
+                                        <h4 class="text-justify">{{ post.title }}</h4>
+                                        <p class="text-right">{{ post.content }}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-justify font-italic">likes: {{ post.like_count }}</p>
+                                        <p class="text-justify font-italic">unlikes: {{ post.unlike_count }}</p>
+                                        <p class="text-justify"><a href="{{ url }}{{ all }}">edit</a></p>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <h4 class="text-center"></h4>
+            {% endif %}
         </ul>
     {% else %}
-        <h4 class="text-center"></h4>
-
+        <h3>You don`t have any posts yet</h3>
     {% endif %}
 {% endblock %}
 </body>

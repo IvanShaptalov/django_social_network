@@ -16,7 +16,6 @@ class PostUser(AbstractUser):
 class Post(models.Model):
     title = models.CharField(max_length=40,
                              verbose_name='Title')
-    email = models.EmailField(verbose_name='Email')
     content = models.TextField(verbose_name='Content')
 
     image = models.ImageField(blank=True, upload_to=get_timestamp_path,

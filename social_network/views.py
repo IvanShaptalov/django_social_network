@@ -58,6 +58,7 @@ def profile_post_add(request):
         return render(request, 'main/profile_post_add.html', context)
 
 
+# fixme image not changed
 @login_required
 def profile_post_change(request, pk):
     post = get_object_or_404(Post, pk=pk)
@@ -74,7 +75,8 @@ def profile_post_change(request, pk):
         return render(request, 'main/profile_post_change.html', context)
 
 
-def user_posts(request):
+def profile_posts(request):
+    """get post from current user"""
     posts = Post.objects.all().filter(author_id=request.user.pk)
     context = {'posts': posts}
     return render(request, 'main/profile.html', context)

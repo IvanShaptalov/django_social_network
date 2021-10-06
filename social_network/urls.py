@@ -16,6 +16,6 @@ urlpatterns = [
     # Add and edit post
     path('accounts/profile/post_add/', views.profile_post_add, name='profile_post_add'),
     path('accounts/profile/post_edit/<int:pk>/', views.profile_post_change, name='profile_post_edit'),
-    path('accounts/profile/', views.index, name='profile'),
+    path('accounts/profile/', views.profile_posts, name='profile'),
 
 ]
