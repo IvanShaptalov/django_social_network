@@ -37,6 +37,6 @@ class PostAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at',)
 
 
-# todonow create all in admin
+# solved create all in admin
 admin.site.register(PostUser, PostUserAdmin)
 admin.site.register(Post, PostAdmin)

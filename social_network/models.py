@@ -28,7 +28,6 @@ class Post(models.Model):
     author = models.ForeignKey(PostUser, on_delete=models.CASCADE,
                                verbose_name='Author')
 
-    # todo ?
     def like_count(self):
         return self.likereaction_set.all().filter(reaction='like').count()
 

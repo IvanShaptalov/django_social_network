@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+from django_site import project_config
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -19,13 +20,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_upy9w^rhb4k&zv_8^29c&4bueiwcn_)7q$!doas6!ijju#)m!'
+SECRET_KEY = os.environ.get('SECRET_KEY') or project_config.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG') or True
 
-ALLOWED_HOSTS = []
-
+# todo write test to this
+# get hosts from environment variable
+HOSTS_STR = os.environ.get('ALLOWED_HOSTS')
+ALLOWED_HOSTS = list(HOSTS_STR.split(',') if HOSTS_STR else [])
 # Application definition
 
 INSTALLED_APPS = [
@@ -103,7 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = os.environ.get('LANGUAGE_CODE') or 'en-us'
 
 TIME_ZONE = 'UTC'
 
@@ -127,3 +130,13 @@ AUTH_USER_MODEL = 'social_network.PostUser'
 # thumbnail
 MEDIA_ROOT = os.path.join(BASE_DIR, 'social_network', 'static')
 MEDIA_URL = os.path.join(BASE_DIR, 'social_network/static/')
+
+# region SMTP
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = os.environ.get('EMAIL_HOST') or project_config.EMAIL_HOST  # 'smtp.gmail.com' for gmail boxes
+EMAIL_PORT = os.environ.get('EMAIL_PORT') or project_config.EMAIL_PORT  # 587 to gmail
+EMAIL_HOST_USER = os.environ.get('EMAIL')  # your email
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD') or project_config.EMAIL_HOST_PASSWORD  # your password
+DEFAULT_FROM_EMAIL = os.environ.get('EMAIL') or project_config.EMAIL  # your email
+# endregion

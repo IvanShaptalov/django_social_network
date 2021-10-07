@@ -29,6 +29,7 @@ def get_timestamp_path(instance, filename):
 
 def send_activation_notification(user):
     if ALLOWED_HOSTS:
+        # todo refactor configs
         host = 'http://' + ALLOWED_HOSTS[0]
     else:
         host = 'http:localhost:8000'

@@ -10,7 +10,9 @@ from django.views.generic import CreateView, TemplateView
 
 from social_network import forms
 from social_network.forms import PostForm
-from social_network.models import Post, PostUser
+from social_network.models import Post, PostUser, LikeReaction
+from social_network.utilities import signer
+from django.core.signing import BadSignature
 
 
 def index(request):
@@ -32,7 +34,24 @@ class RegisterDoneView(TemplateView):
     template_name = 'registration/register_done.html'
 
 
+def user_activate(request, sign):
+    try:
+        username = signer.unsign(sign)
+    except BadSignature:
+        return render(request, 'errors/bad_signature.html')
+    user = get_object_or_404(PostUser, username=username)
+    if user.is_activated:
+        template = 'registration/user_is_activated.html'
+    else:
+        template = 'registration/activation_done.html'
+        user.is_active = True
+        user.is_activated = True
+        user.save()
+    return render(request, template)
+
+
 # endregion
+
 # region login
 class UserLoginView(LoginView):
     template_name = 'login/login.html'
@@ -43,6 +62,7 @@ class UserLogoutView(LoginRequiredMixin, LogoutView):
 
 
 # endregion
+
 # region post operations
 @login_required
 def profile_post_add(request):
@@ -58,7 +78,7 @@ def profile_post_add(request):
         return render(request, 'main/profile_post_add.html', context)
 
 
-# fixme image not changed
+# solved image not changed, issue - multipart/data in html
 @login_required
 def profile_post_change(request, pk):
     post = get_object_or_404(Post, pk=pk)
@@ -81,4 +101,41 @@ def profile_posts(request):
     posts = Post.objects.all().filter(author_id=request.user.pk)
     context = {'posts': posts}
     return render(request, 'main/profile.html', context)
+
+
+# endregion
+
+# region reaction handling
+@login_required
+def handle_reaction(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == 'POST':
+        user_pk = request.user.pk
+        print(request)
+        reaction = request.POST.get('reaction')
+        if reaction == LikeReaction.LIKE:
+            liked = post.likereaction_set.filter(author_id=user_pk).first()
+            if not liked or liked.reaction == LikeReaction.UNLIKE:
+                if not liked:
+                    reaction = LikeReaction()
+                else:
+                    reaction = liked
+                reaction.post = post
+                reaction.author = request.user
+                reaction.reaction = reaction.LIKE
+                reaction.save()
+
+        elif reaction == LikeReaction.UNLIKE:
+            unliked = post.likereaction_set.filter(author_id=user_pk).first()
+            if not unliked or unliked.reaction == LikeReaction.LIKE:
+                if not unliked:
+                    reaction = LikeReaction()
+                else:
+                    reaction = unliked
+                reaction.post = post
+                reaction.author = request.user
+                reaction.reaction = reaction.UNLIKE
+                reaction.save()
+        return redirect('social_network:index')
+
 # endregion

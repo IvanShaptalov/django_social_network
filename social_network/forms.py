@@ -45,8 +45,8 @@ class RegisterUserForm(forms.ModelForm):
         user.is_activated = False
         if commit:
             user.save()
-            # todonext
-        # user_registered.send(RegisterUserForm, instance=user)
+            # solved send activation letter
+        user_registered.send(RegisterUserForm, instance=user)
         return user
 
     class Meta:

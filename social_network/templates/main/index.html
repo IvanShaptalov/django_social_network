@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>social network</title>
@@ -15,11 +16,12 @@
 {% block content %}
     {% if posts %}
         <h3 class="text-center">User posts</h3>
-        <li style="display: flex; flex-direction: column; flex-wrap: wrap; align-content: center">
+        <div style="display: flex; flex-direction: row; flex-wrap: wrap; align-content: center">
             {% if posts %}
                 {% for post in posts %}
                     {% if post.is_active %}
                         <div class="card" style="width: 18rem;margin: 10px">
+                            <h4>{{ post.author }}</h4>
                             {% if post.image %}
                                 <img class="card-img-top" src="{% static post.image %}" alt="image">
                             {% else %}
@@ -38,12 +40,14 @@
                                 </div>
                                 <div>
                                     <p class="card-text">{{ post.content }}</p>
-                                    <p class="text-justify font-italic">
-                                        <a href="#">like: {{ post.like_count }}</a>
-                                    </p>
-                                    <p class="text-justify font-italic">
-                                        <a href="#">unlike: {{ post.unlike_count }}</a>
-                                    </p>
+                                    <form method="post" action="{% url 'social_network:handle_reaction' pk=post.pk  %}">
+                                        {% csrf_token %}
+                                        <input name="post_id" type="hidden" value="{{ post.id }}">
+                                        <input type="submit" name="reaction" value="like"><b>{{ post.like_count }}</b>
+                                        <input type="submit" name="reaction" value="unlike"><b>{{ post.unlike_count }}</b><br>
+                                    </form>
+
+                                    <p>{{ post.created_at.date }}</p>
                                 </div>
                             </div>
                         </div>
@@ -51,7 +55,7 @@
                 {% endfor %}
             {% else %}
                 <h4 class="text-center"></h4>
-                </li>
+                </div>
             {% endif %}
     {% else %}
         <h3>Any posts yet</h3>
