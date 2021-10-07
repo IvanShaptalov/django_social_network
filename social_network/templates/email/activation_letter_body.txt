@@ -1,6 +1,6 @@
 {{ user.username }}!
 You registered in "Social Network"
 To activate your account, follow the link below.
- {{ host }}{% url 'social_network:register_activate' sign=sign %}
-
+{{ host }}{% url 'social_network:register_activate' sign=sign %}"
+Activate account
 Sincerely, site administration "Social Network"

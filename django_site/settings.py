@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'social_network.apps.SocialNetworkConfig',
     'bootstrap4',
+    'api.apps.ApiConfig',
     # 'rest_framework',
 
 ]
@@ -137,7 +138,12 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = os.environ.get('EMAIL_HOST') or project_config.EMAIL_HOST  # 'smtp.gmail.com' for gmail boxes
 EMAIL_PORT = os.environ.get('EMAIL_PORT') or project_config.EMAIL_PORT  # 587 to gmail
-EMAIL_HOST_USER = os.environ.get('EMAIL')  # your email
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER') or project_config.EMAIL  # your email
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD') or project_config.EMAIL_HOST_PASSWORD  # your password
 DEFAULT_FROM_EMAIL = os.environ.get('EMAIL') or project_config.EMAIL  # your email
 # endregion
+# region SERVER
+PROTOCOL = os.environ.get('PROTOCOL') or project_config.PROTOCOL  # http or https
+SERVER_HOST = os.environ.get('SERVER_HOST') or project_config.SERVER_HOST  # server to deploy
+# endregion
+
