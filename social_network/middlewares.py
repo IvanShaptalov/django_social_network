@@ -7,6 +7,7 @@ from social_network.models import PostUser
 
 
 class LastRequestMiddleware:
+    """Middleware to save last logged user request in server"""
     def __init__(self, get_response):
         self.get_response = get_response
 

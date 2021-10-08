@@ -35,6 +35,8 @@ class RegisterDoneView(TemplateView):
 
 
 def generate_api_token():
+    """token to access api info
+    if token already exists, try again"""
     token = get_random_string(length=32)
     if PostUser.objects.filter(api_token=token):
         generate_api_token()
@@ -44,7 +46,6 @@ def generate_api_token():
 
 def user_activate(request, sign):
     # solved test this
-
     try:
         username = signer.unsign(sign)
     except BadSignature:
@@ -120,23 +121,32 @@ def profile_posts(request):
 # region reaction handling
 @login_required
 def handle_reaction(request, pk):
+    """handle like, or unlike action"""
     post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
+        # if post get user and reaction from request
         user_pk = request.user.pk
         print(request)
         reaction = request.POST.get('reaction')
+        # if reaction - like
         if reaction == LikeReaction.LIKE:
             liked = post.likereaction_set.filter(author_id=user_pk).first()
+
+            # if not reaction or user unliked it
             if not liked or liked.reaction == LikeReaction.UNLIKE:
                 if not liked:
+                    # if unliked - write new reaction
                     reaction = LikeReaction()
                 else:
+                    # set that reaction is like
                     reaction = liked
+                    # add post and author to reaction
                 reaction.post = post
                 reaction.author = request.user
                 reaction.reaction = reaction.LIKE
+                # commit
                 reaction.save()
-
+        # if reaction unlike analog to like
         elif reaction == LikeReaction.UNLIKE:
             unliked = post.likereaction_set.filter(author_id=user_pk).first()
             if not unliked or unliked.reaction == LikeReaction.LIKE:
@@ -148,6 +158,7 @@ def handle_reaction(request, pk):
                 reaction.author = request.user
                 reaction.reaction = reaction.UNLIKE
                 reaction.save()
+        # refresh page
         return redirect('social_network:index')
 
 

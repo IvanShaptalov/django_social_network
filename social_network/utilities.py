@@ -7,10 +7,14 @@ from django.template.loader import render_to_string
 
 from django_site.settings import ALLOWED_HOSTS, PROTOCOL
 
+# to sign username
 signer = Signer()
 
 
 def send_activation_notification(user):
+    """send activation letter to user
+    @:param user - PostUser object
+    """
     if ALLOWED_HOSTS:
         host = f'{PROTOCOL}://' + ALLOWED_HOSTS[0]
     else:
@@ -24,4 +28,5 @@ def send_activation_notification(user):
 
 
 def get_timestamp_path(instance, filename):
+    """convert image name + datetime to filename"""
     return '{}{}'.format(datetime.now().timestamp(), splitext(filename)[1])
