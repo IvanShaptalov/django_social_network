@@ -9,6 +9,48 @@
           integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0"
           crossorigin="anonymous">
     <title>Django Cards</title>
+    <style>
+        .arrow {
+            display: inline-block;
+            padding: 3px;
+        }
+
+        .arrow_color_green {
+            border: solid green;
+            border-width: 0 3px 3px 0;
+
+        }
+        .arrow_color_red {
+            border: solid red;
+            border-width: 0 3px 3px 0;
+        }
+
+        .right {
+            transform: rotate(-45deg);
+            -webkit-transform: rotate(-45deg);
+        }
+
+        .left {
+            transform: rotate(135deg);
+            -webkit-transform: rotate(135deg);
+        }
+
+        .up {
+            transform: rotate(-135deg);
+            -webkit-transform: rotate(-135deg);
+        }
+
+        .down {
+            transform: rotate(45deg);
+            -webkit-transform: rotate(45deg);
+        }
+
+        .hidden_text {
+            font-size: 0;
+            display: block;
+            line-height: 0;
+        }
+    </style>
 </head>
 <body>
 {% extends "layout/basic.html" %}
@@ -40,11 +82,21 @@
                                 </div>
                                 <div>
                                     <p class="card-text">{{ post.content }}</p>
-                                    <form method="post" action="{% url 'social_network:handle_reaction' pk=post.pk  %}">
+                                    <form method="post" action="{% url 'social_network:handle_reaction' pk=post.pk %}">
                                         {% csrf_token %}
                                         <input name="post_id" type="hidden" value="{{ post.id }}">
-                                        <input type="submit" name="reaction" value="like"><b>{{ post.like_count }}</b>
-                                        <input type="submit" name="reaction" value="unlike"><b>{{ post.unlike_count }}</b><br>
+                                        <div class="container">
+                                            <div class="container">
+                                                <input type="submit" class="arrow up hidden_text arrow_color_green"
+                                                       name="reaction"
+                                                       value="like"><b>{{ post.like_count }}</b>
+                                            </div>
+                                            <div class="container">
+                                                <input type="submit" name="reaction" value="unlike"
+                                                       class="arrow down hidden_text arrow_color_red"><b>{{ post.unlike_count }}</b><br>
+                                            </div>
+                                        </div>
+
                                     </form>
 
                                     <p>{{ post.created_at.date }}</p>
