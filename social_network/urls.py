@@ -16,6 +16,9 @@ urlpatterns = [
     # Add and edit post
     path('accounts/profile/post_add/', views.profile_post_add, name='profile_post_add'),
     path('accounts/profile/post_edit/<int:pk>/', views.profile_post_change, name='profile_post_edit'),
+    # Api token
+    path('accounts/profile/personal_token/', views.api_token, name='profile_api_token'),
+
     path('accounts/profile/', views.profile_posts, name='profile'),
     # Post reaction
     path('reaction/<int:pk>', views.handle_reaction, name='handle_reaction'),

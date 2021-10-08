@@ -42,6 +42,7 @@ def user_activate(request, sign):
             generate_api_token()
         else:
             return api_token
+
     try:
         username = signer.unsign(sign)
     except BadSignature:
@@ -146,5 +147,13 @@ def handle_reaction(request, pk):
                 reaction.reaction = reaction.UNLIKE
                 reaction.save()
         return redirect('social_network:index')
+
+
+# endregion
+
+# region api_token
+@login_required
+def api_token(request):
+    return render(request, 'main/profile_api_key.html')
 
 # endregion
