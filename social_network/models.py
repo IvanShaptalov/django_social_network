@@ -8,6 +8,7 @@ from social_network.utilities import get_timestamp_path
 class PostUser(AbstractUser):
     is_activated = models.BooleanField(default=True, db_index=True, verbose_name='Is this account activated?')
     date_last_request = models.DateTimeField(auto_now_add=True, db_index=True, verbose_name='Last request to server')
+    api_token = models.CharField(db_index=True, max_length=32, null=True, unique=True, verbose_name='Account api token')
 
     class Meta(AbstractUser.Meta):
         pass

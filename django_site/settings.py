@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'social_network.apps.SocialNetworkConfig',
     'bootstrap4',
     'api.apps.ApiConfig',
+    'rest_framework',
+    'corsheaders',
     # 'rest_framework',
 
 ]

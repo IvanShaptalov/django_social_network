@@ -16,14 +16,14 @@ send_activation_notifications.short_description = 'Activation mails to users'
 
 
 class PostUserAdmin(admin.ModelAdmin):
-    list_display = ('__str__', 'is_activated', 'last_login', 'date_joined', 'date_last_request')
+    list_display = ('__str__', 'is_activated', 'last_login', 'date_last_request')
     search_fields = ('username', 'email', 'first_name', 'last_name')
     fields = (('username', 'email'), ('first_name', 'last_name'),
               ('is_active', 'is_activated'),
               ('is_staff', 'is_superuser'), 'groups',
-              'user_permissions',
+              'user_permissions', 'api_token',
               ('date_joined',))
-    readonly_fields = ('last_login', 'date_joined')
+    readonly_fields = ('last_login', 'date_joined', 'api_token')
 
     actions = (send_activation_notifications,)
 

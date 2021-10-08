@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render, redirect, get_object_or_404
-
+from django.utils.crypto import get_random_string
 # Create your views here.
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView
@@ -35,6 +35,13 @@ class RegisterDoneView(TemplateView):
 
 
 def user_activate(request, sign):
+    # todo test this
+    def generate_api_token():
+        api_token = get_random_string(length=32)
+        if PostUser.objects.filter(api_token=api_token):
+            generate_api_token()
+        else:
+            return api_token
     try:
         username = signer.unsign(sign)
     except BadSignature:
@@ -46,6 +53,8 @@ def user_activate(request, sign):
         template = 'registration/activation_done.html'
         user.is_active = True
         user.is_activated = True
+        user.api_token = generate_api_token()
+        print(f'token: {user.api_token}')
         user.save()
     return render(request, template)
 
