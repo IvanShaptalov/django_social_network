@@ -27,8 +27,8 @@ DEBUG = os.environ.get('DEBUG') or True
 
 # todo write test to this
 # get hosts from environment variable
-HOSTS_STR = os.environ.get('ALLOWED_HOSTS')
-ALLOWED_HOSTS = list(HOSTS_STR.split(',') if HOSTS_STR else [])
+HOSTS_STR = os.environ.get('ALLOWED_HOSTS') or 'not_exists'
+ALLOWED_HOSTS = list(HOSTS_STR.split(',') if HOSTS_STR != 'not_exists' else [])
 # Application definition
 
 INSTALLED_APPS = [
@@ -118,7 +118,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -148,4 +148,3 @@ DEFAULT_FROM_EMAIL = os.environ.get('EMAIL') or project_config.EMAIL  # your ema
 PROTOCOL = os.environ.get('PROTOCOL') or project_config.PROTOCOL  # http or https
 SERVER_HOST = os.environ.get('SERVER_HOST') or project_config.SERVER_HOST  # server to deploy
 # endregion
-

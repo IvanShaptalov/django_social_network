@@ -5,7 +5,6 @@ from social_network import views
 app_name = 'social_network'
 
 urlpatterns = [
-    path('', views.index, name='index'),
     # Login
     path('accounts/login/', views.UserLoginView.as_view(), name='login'),
     path('accounts/logout/', views.UserLogoutView.as_view(), name='logout'),
@@ -22,5 +21,6 @@ urlpatterns = [
     path('accounts/profile/', views.profile_posts, name='profile'),
     # Post reaction
     path('reaction/<int:pk>', views.handle_reaction, name='handle_reaction'),
+    path('', views.index, name='index'),
 
 ]

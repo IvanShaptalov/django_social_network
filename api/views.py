@@ -21,6 +21,8 @@ def get_reaction_statistic(request, from_date, to_date, api_key):
             date_to = datetime.datetime.strptime(to_date, date_format)
             date_to = date_to + datetime.timedelta(days=1)
             to_date = date_to.strftime(date_format)
+            if date_from > date_to:
+                raise ValueError()
         except ValueError as e:
             data = {
                 'value error': f'date format must be :{date_format}',
