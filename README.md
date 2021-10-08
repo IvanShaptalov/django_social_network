@@ -18,23 +18,23 @@ Current Features:
 
 ### Screenshots
 
-##~Home page~
+##~Home page
 
 <img height="400" src="/screenshots/main_page.png" width="800"/><br>
 
-##~Post editing~
+##~Post editing
 
 <img height="400" src="/screenshots/post_editing_page.png" width="800"/><br>
 
-##~Api token~
+##~Api token
 
 <img height="400" src="/screenshots/api_token.png" width="800"/><br>
 
-##~Api representation using django rest framework~
+##~Api representation using django rest framework
 
 <img height="400" src="/screenshots/django_api.png" width="800"/><br>
 
-##~Api representation in json framework~
+##~Api representation in json framework
 
 
 
