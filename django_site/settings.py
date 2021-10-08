@@ -25,7 +25,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY') or project_config.SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG') or True
 
-# todo write test to this
+# solved write test to this
 # get hosts from environment variable
 HOSTS_STR = os.environ.get('ALLOWED_HOSTS') or 'not_exists'
 ALLOWED_HOSTS = list(HOSTS_STR.split(',') if HOSTS_STR != 'not_exists' else [])

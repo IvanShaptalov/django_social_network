@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.test import Client
 from social_network.models import PostUser
 # Create your tests here.
-# todo test view function, test serializer
+# solved test view function
 from rest_framework import status
 
 

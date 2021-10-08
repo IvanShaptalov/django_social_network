@@ -1,8 +1,10 @@
 from django.test import TestCase
 from django.test import Client
 
+from social_network.models import PostUser, LikeReaction, Post
+from social_network.views import generate_api_token
 # Create your tests here.
-# todo test view function, test serializer
+# solved test view function
 from rest_framework import status
 
 
@@ -63,5 +65,41 @@ class TestConfig(TestCase):
             print(e)
             self.fail('e')
 
-# class TestModels(TestCase):
-#     def setUp(self) -> None:
+    def test_generation_token(self):
+        users_id = range(0, 10000)
+        try:
+            for user_id in users_id:
+                user = PostUser()
+                user.username = f'user #{user_id}'
+                user.api_token = generate_api_token()
+                if user_id % 3333 == 0:
+                    print(f'user {user}/10000')
+        except Exception as e:
+            self.fail(f'{e}, error with test generation token, token not unique')
+
+
+class TestModels(TestCase):
+    def setUp(self) -> None:
+        user, user1 = PostUser(), PostUser()
+        user1.username, user.username = 'test2', 'test1'
+        user.save()
+        user1.save()
+        post = Post()
+        post.title, post.content, post.author = 'title', 'content', user
+        post.save()
+        like_reaction = LikeReaction()
+        like_reaction.reaction = like_reaction.LIKE
+        like_reaction.author, like_reaction.post = user1, post
+        post.save()
+        like_reaction.save()
+        self.user, self.post, self.user1, self.like_reaction = user, post, user1, like_reaction
+
+    def test_reaction_count(self):
+        post = Post.objects.first()
+        self.assertEqual(post.like_count(), 1, 'not liked')
+        like_reaction = LikeReaction()
+        like_reaction.reaction, like_reaction.author, like_reaction.post = like_reaction.UNLIKE, self.user1, self.post
+        like_reaction.save()
+        self.assertEqual(post.unlike_count(), 1, 'not unliked')
+
+

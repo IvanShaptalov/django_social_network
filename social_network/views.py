@@ -34,14 +34,16 @@ class RegisterDoneView(TemplateView):
     template_name = 'registration/register_done.html'
 
 
+def generate_api_token():
+    token = get_random_string(length=32)
+    if PostUser.objects.filter(api_token=token):
+        generate_api_token()
+    else:
+        return token
+
+
 def user_activate(request, sign):
-    # todo test this
-    def generate_api_token():
-        api_token = get_random_string(length=32)
-        if PostUser.objects.filter(api_token=api_token):
-            generate_api_token()
-        else:
-            return api_token
+    # solved test this
 
     try:
         username = signer.unsign(sign)
